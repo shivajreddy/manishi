@@ -1,0 +1,23 @@
+# single line CL command
+#docker run --detach --env MYSQL_ROOT_PASSWORD=pass@123 --env MYSQL_USER=shiva --env MYSQL_PASSWORD=pass@123 --env MYSQL_DATABASE=docker_db --name mysql --publish 3306:3306 mysql:8-oracle
+
+# using docker compose, paste the following in docker-compose.yml file
+version: '3'
+
+services:
+  mysql:
+    image: mysql:8-oracle
+    environment:
+      - MYSQL_ROOT_PASSWORD=pass@123
+      - MYSQL_USER=shiva
+      - MYSQL_PASSWORD=pass@123
+      - MYSQL_DATABASE=manishi_dev
+    ports:
+      - "3306:3306"
+    restart: always
+    volumes:
+      - dbdata:/var/lib/mysql
+
+volumes:
+  dbdata:
+
