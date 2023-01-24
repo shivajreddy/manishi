@@ -3,12 +3,12 @@ package com.shiva.manishi.security;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import org.springframework.web.filter.CorsFilter;
 
 
 @Configuration
@@ -19,30 +19,38 @@ public class WebConfiguration {
 		return http
 				.httpBasic().and()
 
+				.authorizeHttpRequests(req -> {
+
+					req.requestMatchers("/sign-up").permitAll();
+					req.requestMatchers("/login").permitAll();
+					req.requestMatchers("/demo").permitAll();
+
+					req.anyRequest().authenticated().and();
+				})
+
+				.csrf().disable()
+				//.authorizeHttpRequests().requestMatchers("/demo").permitAll().and()
+
 				.build();
 	}
 
-
 	@Bean
-	public UserDetailsService userDetailsService() {
-		return new InMemoryUserDetailsManager(
-				User.builder()
-						.username("shiva")
-						.password(passwordEncoder().encode("pass"))
-						.authorities("read")
-						.build(),
-				User.builder()
-						.username("admin")
-						.password(passwordEncoder().encode("pass"))
-						.authorities("read", "write")
-						.build()
-
-		);
+	public CorsFilter corsFilter() {
+		UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+		CorsConfiguration config = new CorsConfiguration();
+		config.setAllowCredentials(true);
+		// # Allow requests from react app
+		config.addAllowedOrigin("http://localhost:5173");
+		config.addAllowedHeader("*");
+		config.addAllowedMethod("*");
+		source.registerCorsConfiguration("/**", config);
+		return new CorsFilter(source);
 	}
 
 	@Bean
 	public PasswordEncoder passwordEncoder() {
-		return new BCryptPasswordEncoder();
+		return NoOpPasswordEncoder.getInstance();
+		//return new BCryptPasswordEncoder();
 	}
 
 }

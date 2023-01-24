@@ -17,3 +17,7 @@ spring:
         dialect: org.hibernate.dialect.MySQLDialect
     hibernate:
       ddl-auto: update
+
+logging:
+  level:
+    org.springframework: debug

@@ -1,6 +1,7 @@
 package com.shiva.manishi.controller;
 
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 
@@ -12,5 +13,10 @@ public class DemoController {
 		return "test ok ✅";
 	}
 
+	@PostMapping("/demo")
+	public String postDemo() {
+		return "post test ok ✅";
+	}
 
 }
+
