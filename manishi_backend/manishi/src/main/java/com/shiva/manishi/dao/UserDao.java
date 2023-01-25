@@ -4,7 +4,6 @@ import lombok.Getter;
 import lombok.Setter;
 
 
-// # add getters and setters as needed
 @Getter
 @Setter
 public class UserDao {
@@ -14,3 +13,4 @@ public class UserDao {
 	private String password;
 
 }
+

@@ -1,14 +1,12 @@
 package com.shiva.manishi.controller;
 
-
 import com.shiva.manishi.dao.UserDao;
 import com.shiva.manishi.entity.User;
 import com.shiva.manishi.service.UserServiceLayer;
 import jakarta.validation.Valid;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -17,6 +15,7 @@ import java.util.List;
 public class UserController {
 
 	private final UserServiceLayer userService;
+	private final PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
 	public UserController(UserServiceLayer userService) {
 		this.userService = userService;
@@ -29,6 +28,7 @@ public class UserController {
 
 	@PostMapping("/sign-up")
 	public UserDao createNewUser(@RequestBody @Valid User userData) {
+		userData.setPassword(passwordEncoder.encode(userData.getPassword()));
 		return userService.createNewUser(userData);
 	}
 
@@ -37,4 +37,10 @@ public class UserController {
 		return "login success";
 	}
 
+	@GetMapping("/users/{username}")
+	public UserDao findUser(@PathVariable String username){
+		return userService.findByUsername(username);
+	}
+
 }
+

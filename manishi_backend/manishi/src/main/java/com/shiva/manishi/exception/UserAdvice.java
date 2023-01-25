@@ -1,6 +1,7 @@
 package com.shiva.manishi.exception;
 
 
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
@@ -32,11 +33,24 @@ public class UserAdvice extends ResponseEntityExceptionHandler {
 
 		int i = 0;
 		for (FieldError fieldError : ex.getFieldErrors())
-			sb.append(". Error-").append(++i).append(":").append(fieldError.getDefaultMessage());
+			sb.append(". Error-").append(++i).append(":").append(fieldError.getField()).append(fieldError.getDefaultMessage());
 
 		CustomError error = new CustomError(sb.toString(), LocalTime.now(), request.getDescription(false));
 		return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
 	}
+
+	@ExceptionHandler(NoUserFoundException.class)
+	public ResponseEntity<CustomError> handleNoUserFoundException(Exception ex, WebRequest request) {
+		CustomError error = new CustomError(ex.getMessage(), LocalTime.now(), request.getDescription(false));
+		return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
+	}
+
+	@ExceptionHandler(DuplicateUsernameException.class)
+	public ResponseEntity<CustomError> handleDuplicateUsernameException(Exception ex, WebRequest req) {
+		CustomError error = new CustomError(ex.getMessage(), LocalTime.now(), req.getDescription(false));
+		return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
+	}
+
 
 	//@ExceptionHandler()
 }

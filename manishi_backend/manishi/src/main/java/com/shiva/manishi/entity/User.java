@@ -20,18 +20,15 @@ public class User {
 
 	@NotNull
 	@Size(min = 4)
+	@Column(unique = true)
 	private String username;
 
 	@NotNull
 	@Size(min = 4)
 	private String password;
 
+	private boolean active = true;
 
-	@NotNull
-	private boolean active;
-
-
-	@NotNull
-	private String roles;
+	private String roles = "ROLE_USER";
 }
 

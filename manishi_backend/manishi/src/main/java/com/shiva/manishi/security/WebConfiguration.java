@@ -3,12 +3,11 @@ package com.shiva.manishi.security;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.crypto.password.NoOpPasswordEncoder;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.web.cors.CorsConfiguration;
-import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
-import org.springframework.web.filter.CorsFilter;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 
 @Configuration
@@ -18,39 +17,45 @@ public class WebConfiguration {
 	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 		return http
 				.httpBasic().and()
+				.cors().and()
 
 				.authorizeHttpRequests(req -> {
 
 					req.requestMatchers("/sign-up").permitAll();
 					req.requestMatchers("/login").permitAll();
 					req.requestMatchers("/demo").permitAll();
+					//req.requestMatchers("/users").permitAll();
 
 					req.anyRequest().authenticated().and();
 				})
 
 				.csrf().disable()
-				//.authorizeHttpRequests().requestMatchers("/demo").permitAll().and()
-
 				.build();
 	}
 
 	@Bean
-	public CorsFilter corsFilter() {
-		UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-		CorsConfiguration config = new CorsConfiguration();
-		config.setAllowCredentials(true);
-		// # Allow requests from react app
-		config.addAllowedOrigin("http://localhost:5173");
-		config.addAllowedHeader("*");
-		config.addAllowedMethod("*");
-		source.registerCorsConfiguration("/**", config);
-		return new CorsFilter(source);
+	public WebMvcConfigurer corsConfigurer() {
+		return new WebMvcConfigurer() {
+			@Override
+			public void addCorsMappings(CorsRegistry registry) {
+				// get the properties from the application.yml file
+
+				registry
+						.addMapping("/*")
+						//.addMapping("/users")
+						.allowedOrigins("http://localhost:5173")
+						.maxAge(3600)
+						//.allowedOrigins("/*")
+						.allowedMethods("GET", "POST")
+						.allowedHeaders("*")
+						.allowCredentials(true);
+			}
+		};
 	}
 
 	@Bean
 	public PasswordEncoder passwordEncoder() {
-		return NoOpPasswordEncoder.getInstance();
-		//return new BCryptPasswordEncoder();
+		return new BCryptPasswordEncoder();
 	}
-
 }
+

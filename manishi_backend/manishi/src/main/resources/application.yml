@@ -18,6 +18,15 @@ spring:
     hibernate:
       ddl-auto: update
 
+
+#management:
+#  endpoints:
+#    web:
+#      cors:
+#        allowed-origins: "http://localhost:5173"
+
+
 logging:
   level:
     org.springframework: debug
+
