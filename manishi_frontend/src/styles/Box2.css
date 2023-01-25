@@ -1,0 +1,53 @@
+.title {
+}
+
+.main-box {
+    /*background: linear-gradient(to right, #ff0000, #0000ff);*/
+    background-image: linear-gradient(
+            45deg,
+            hsl(196deg 76% 31%) 0%,
+            hsl(193deg 89% 28%) 12%,
+            hsl(191deg 100% 26%) 25%,
+            hsl(189deg 100% 26%) 38%,
+            hsl(188deg 100% 25%) 50%,
+            hsl(186deg 99% 25%) 62%,
+            hsl(184deg 85% 26%) 73%,
+            hsl(181deg 71% 28%) 83%,
+            hsl(178deg 60% 29%) 92%,
+            hsl(175deg 52% 31%) 100%
+    );
+
+
+    min-height: 100vh;
+    min-width: 100vw;
+
+    position: absolute;
+    top: 0;
+    left: 0;
+    box-sizing: border-box;
+}
+
+.main-sub-box {
+    border-radius: 8px;
+    /*background-color: white;*/
+    background-color: #00bf8f;
+
+    position: absolute;
+    top: 0;
+    left: 0;
+
+    margin: 10px;
+
+    padding: 20px;
+
+    height: calc(100vh - 20px); /* reduce the height by 60px (30px border on each side) */
+    width: calc(100vw - 20px); /* reduce the width by 60px (30px border on each side) */
+
+    box-sizing: border-box;
+}
+
+.main-sub-box h1 {
+    margin: 0;
+    text-align: center;
+}
+
