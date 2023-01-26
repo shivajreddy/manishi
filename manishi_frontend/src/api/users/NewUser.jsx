@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import axios from 'axios'
 
-function CreateNewUser(user) {
+function CreateNewUser (username, password) {
 	
 	const baseUrl = 'http://localhost:8080'
 	const demoUrl = baseUrl + '/demo'
@@ -11,19 +11,18 @@ function CreateNewUser(user) {
 	// let users = null
 	const [users, setUsers] = useState(null)
 	
-	useEffect(()=>{
+	useEffect(() => {
 		
-		axios.get(
+		axios.post(
 			usersUrl,
 			{
-				auth: {
-					username: 'user',
-					password: 'pass',
-				},
+				'username': username,
+				'password': password,
 			},
-		).then(res =>setUsers(res.data))
+		).then(res => setUsers(res.data))
 		
 	}, [usersUrl])
 	
-	return  users
+	return users
 }
+

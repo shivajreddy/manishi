@@ -14,6 +14,7 @@ const Test = () => {
     console.log("username=", event.target.username.value)
     console.log("password=", event.target.password.value)
     console.log("re-password=", event.target.repassword.value)
+    
     if (password === rePassword){
     
     }

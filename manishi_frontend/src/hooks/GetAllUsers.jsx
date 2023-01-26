@@ -73,3 +73,4 @@ export default FetchAllUsers
 // 		'password': 'pass',
 // 	},
 // ).then(res => console.log('post to /users with data', res))
+
